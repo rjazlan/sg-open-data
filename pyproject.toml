@@ -1,0 +1,45 @@
+[project]
+name = "sg-open-data"
+version = "0.1.0"
+description = "Repo for creating tools with SG open data initiative"
+authors = [
+    { name = "rjazlan", email = "redzuan.jazlan@protonmail.ch" }
+]
+dependencies = [
+    "polars>=1.22.0",
+    "pandas>=2.2.3",
+    "geopandas>=1.0.1",
+    "shapely>=2.0.7",
+    "aiohttp>=3.11.12",
+    "asyncpg>=0.30.0",
+    "fastapi>=0.115.8",
+    "loguru>=0.7.3",
+    "pydantic-settings>=2.7.1",
+    "tqdm>=4.67.1",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "ruff>=0.9.6",
+    "mypy>=1.15.0",
+    "pre-commit>=4.1.0",
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.25.3",
+    "pytest-cov>=6.0.0",
+    "hypothesis>=6.126.0",
+    "commitizen>=4.2.2",
+    "bandit>=1.8.3",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sg_open_data"]
