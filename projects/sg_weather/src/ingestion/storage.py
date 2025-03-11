@@ -71,6 +71,7 @@ class WeatherStorage:
                 max_inactive_connection_lifetime=300.0,  # 5 miniutes
                 timeout=60.0,  # Connection timesout
             )
+        await self.initialize_tables()
         await self._initialize_metadata_cache()
         logger.info("Connected to database with optimized pool settings")
 
@@ -140,6 +141,9 @@ class WeatherStorage:
                 "SELECT create_hypertable('raw_weather_data', 'data_timestamp', if_not_exists => TRUE)"
             )
             logger.info("Hypertable configuration verified")
+            await conn.execute(
+                "CREATE INDEX IF NOT EXISTS idx_raw_weather_param_time ON raw_weather_data (parameter, data_timestamp)"
+            )
 
             # Create metadata tracking table
             await conn.execute("""
@@ -163,7 +167,7 @@ class WeatherStorage:
                 sha256_hash.update(byte_block)
         return sha256_hash.hexdigest()
 
-    async def check_file_processed(
+    async def is_file_already_processed(
         self, data_timestamp: datetime, data_type: str, parameter: str, file_path: Path
     ) -> Tuple[bool, Optional[str]]:
         """Check if file has been processed and hasn't changed using cached metadata."""
@@ -194,7 +198,7 @@ class WeatherStorage:
         )
 
         # Check if the file has already been processed
-        already_processed, file_hash = await self.check_file_processed(
+        already_processed, file_hash = await self.is_file_already_processed(
             timestamp, data_type, parameter, file_path
         )
 
@@ -269,7 +273,7 @@ class WeatherStorage:
         file_hash = self._calculate_file_hash(file_path)
 
         # Check if file needs processing
-        already_processed, _ = await self.check_file_processed(
+        already_processed, _ = await self.is_file_already_processed(
             timestamp, data_type, parameter, file_path
         )
 
