@@ -16,6 +16,9 @@ dependencies = [
     "loguru>=0.7.3",
     "pydantic-settings>=2.7.1",
     "tqdm>=4.67.1",
+    "prefect>=3.2.11",
+    "mlflow>=2.20.3",
+    "dvc>=3.59.1",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"

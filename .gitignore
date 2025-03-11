@@ -163,7 +163,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
+  
 # pytype static type analyzer
 .pytype/
 
@@ -182,3 +182,8 @@ cython_debug/
 
 # MacOS
 .DS_Store
+
+# MLflow
+mlruns/
+mlflow.db
+mlruns.db

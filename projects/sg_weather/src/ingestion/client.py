@@ -79,7 +79,7 @@ class WeatherAPIClient:
             logger.error(f"Error making request to {url}: {e}")
             raise
 
-    async def _make_paginated_request(
+    async def fetch_paginated_api_results(
         self, endpoint: str, params: Optional[dict[str, Any]] = None
     ) -> dict:
         """
@@ -222,19 +222,19 @@ class WeatherAPIClient:
     ) -> WeatherReadingData:
         """Get temperature readings."""
         params = {"date": date.isoformat()} if date else None
-        data = await self._make_paginated_request("/air-temperature", params)
+        data = await self.fetch_paginated_api_results("/air-temperature", params)
         return WeatherReadingData(**data)
 
     async def get_rainfall(self, date: Optional[datetime] = None) -> WeatherReadingData:
         """Get rainfall readings."""
         params = {"date": date.isoformat()} if date else None
-        data = await self._make_paginated_request("/rainfall", params)
+        data = await self.fetch_paginated_api_results("/rainfall", params)
         return WeatherReadingData(**data)
 
     async def get_humidity(self, date: Optional[datetime] = None) -> WeatherReadingData:
         """Get relative humidity readings."""
         params = {"date": date.isoformat()} if date else None
-        data = await self._make_paginated_request("/relative-humidity", params)
+        data = await self.fetch_paginated_api_results("/relative-humidity", params)
         return WeatherReadingData(**data)
 
     async def get_wind_speed(
@@ -242,7 +242,7 @@ class WeatherAPIClient:
     ) -> WeatherReadingData:
         """Get wind speed readings."""
         params = {"date": date.isoformat()} if date else None
-        data = await self._make_paginated_request("/wind-speed", params)
+        data = await self.fetch_paginated_api_results("/wind-speed", params)
         return WeatherReadingData(**data)
 
     async def get_wind_direction(
@@ -250,7 +250,7 @@ class WeatherAPIClient:
     ) -> WeatherReadingData:
         """Get wind direction readings."""
         params = {"date": date.isoformat()} if date else None
-        data = await self._make_paginated_request("/wind-direction", params)
+        data = await self.fetch_paginated_api_results("/wind-direction", params)
         return WeatherReadingData(**data)
 
     async def get_two_hour_forecast(
@@ -258,7 +258,7 @@ class WeatherAPIClient:
     ) -> TwoHourForecastData:
         """Get 2-hour weather forecast."""
         params = {"date": date.isoformat()} if date else None
-        data = await self._make_paginated_request("/two-hr-forecast", params)
+        data = await self.fetch_paginated_api_results("/two-hr-forecast", params)
         return TwoHourForecastData(**data)
 
     async def get_24_hour_forecast(
@@ -266,7 +266,9 @@ class WeatherAPIClient:
     ) -> TwentyFourHourOutlookData:
         """Get 24-hour weather forecast."""
         params = {"date": date.isoformat()} if date else None
-        data = await self._make_paginated_request("/twenty-four-hr-forecast", params)
+        data = await self.fetch_paginated_api_results(
+            "/twenty-four-hr-forecast", params
+        )
         return TwentyFourHourOutlookData(**data)
 
     async def get_four_day_forecast(
@@ -274,35 +276,35 @@ class WeatherAPIClient:
     ) -> FourDayOutlookData:
         """Get 4-day weather forecast."""
         params = {"date": date.isoformat()} if date else None
-        data = await self._make_paginated_request("/four-day-outlook", params)
+        data = await self.fetch_paginated_api_results("/four-day-outlook", params)
         return FourDayOutlookData(**data)
 
     async def get_wbgt(self, date: Optional[datetime] = None) -> WBGTData:
         """Get WBGT (Wet Bulb Globe Temperature) readings."""
         params = {"date": date.isoformat() if date else None, "api": "wbgt"}
-        data = await self._make_paginated_request("/weather", params)
+        data = await self.fetch_paginated_api_results("/weather", params)
         return WBGTData(**data)
 
     async def get_lightning(self, date: Optional[datetime] = None) -> LightningData:
         """Get lightning observations."""
         params = {"date": date.isoformat() if date else None, "api": "lightning"}
-        data = await self._make_paginated_request("/weather", params)
+        data = await self.fetch_paginated_api_results("/weather", params)
         return LightningData(**data)
 
     async def get_pm25(self, date: Optional[datetime] = None) -> PM25Data:
         """Get PM2.5 readings."""
         params = {"date": date.isoformat()} if date else None
-        data = await self._make_paginated_request("/pm25", params)
+        data = await self.fetch_paginated_api_results("/pm25", params)
         return PM25Data(**data)
 
     async def get_psi(self, date: Optional[datetime] = None) -> PSIData:
         """Get PSI readings."""
         params = {"date": date.isoformat()} if date else None
-        data = await self._make_paginated_request("/psi", params)
+        data = await self.fetch_paginated_api_results("/psi", params)
         return PSIData(**data)
 
     async def get_uv_index(self, date: Optional[datetime] = None) -> UVIndexData:
         """Get UV index readings."""
         params = {"date": date.isoformat()} if date else None
-        data = await self._make_paginated_request("/uv", params)
+        data = await self.fetch_paginated_api_results("/uv", params)
         return UVIndexData(**data)
