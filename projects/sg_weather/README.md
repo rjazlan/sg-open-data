@@ -55,14 +55,28 @@ Bear with me, the system was designed to be as friendly as possible but it's bui
 
 use the .env.example as a template for .env, enter your postgresql details. This will give you the ability to connect to your database. Otherwise, just install the dependencies using the pyproject.toml / requirements.lock. I use Rye (rust-based package manager) because I don't have to wait 15 minutes for package resolution. Make sure to activate your environment.
 
-1.
+1;
 
 ```bash
 cp .env.template .env
 # Edit .env with your database credentials
 ```
 
-2.
+2;
+We use MLflow and Prefect to track our flows and orchestrate. After installing, you should be able to just start the servers using the following commands.
+
+```bash
+mlflow server
+prefect server start
+```
+
+You can equally stop the servers by killing the mlflow process and running the following command to stop the prefect server
+
+```bash
+prefect server stop
+```
+
+3;
 
 ```bash
 python -m projects.sg_weather.scripts.run_elt_pipeline --start_date <date> --end_date <date> --parallel 2
